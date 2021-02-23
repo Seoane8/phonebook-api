@@ -1,12 +1,16 @@
 const express = require('express')
+const cors = require('cors')
 const {devLogger, postLogger} = require('./logs/loggers')
 
 const MAX_RANDOM = Number.MAX_SAFE_INTEGER
 const PORT = 3001 
 
-const app = express().use(express.json())
-
-app.use(devLogger).use(postLogger)
+const app = express()
+    .use(cors())
+    .use(express.json())
+app
+    .use(devLogger)
+    .use(postLogger)
 
 let persons = [
     {
@@ -89,7 +93,7 @@ app.post('/api/persons', (request, response) => {
 
     persons = [...persons, newPerson]
 
-    response.status(201).end()
+    response.status(201).json(newPerson)
 })
 
 app.use((request, response) => {
