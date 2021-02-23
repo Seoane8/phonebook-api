@@ -1,10 +1,9 @@
-const { request, response } = require('express')
 const express = require('express')
 
 const app = express()
 const PORT = 3001
 
-const persons = [
+let persons = [
     {
         name: 'Arto Hellas',
         tfno: '040-123456',
@@ -38,15 +37,33 @@ app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
     const id = Number(request.params.id)
     const person = persons.find(person => person.id === id)
 
-    if (!person){
-        return response.status(404).end()
+    if (!person) {
+        return next()
     }
 
     response.json(person)
+})
+
+app.delete('/api/persons/:id', (request, response, next) => {
+    const id = Number(request.params.id)
+    let notFound = true
+    persons = persons.filter(person => person.id !== id ? true : notFound=false)
+
+    if (notFound) {
+        return next()
+    }
+
+    response.status(204).end()
+})
+
+app.use((request, response) => {
+    response.status(404).json({
+        error: 'Not found'
+    })
 })
 
 app.listen(PORT, () => {
