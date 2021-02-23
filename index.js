@@ -1,3 +1,4 @@
+const { request } = require('express')
 const express = require('express')
 
 const app = express()
@@ -25,6 +26,13 @@ const persons = [
         id: 4,
     },
 ]
+
+app.get('/info', (request, response) => {
+    const enters = `<p>Phonebook has info for ${persons.length} people</p>`
+    const actualDate = new Date
+    const date = `<p>${actualDate.toGMTString()}`
+    response.send(enters+date)
+})
 
 app.get('/api/persons', (request, response) => {
     response.json(persons)
