@@ -1,9 +1,12 @@
 const express = require('express')
+const {devLogger, postLogger} = require('./logs/loggers')
 
 const MAX_RANDOM = Number.MAX_SAFE_INTEGER
 const PORT = 3001 
 
 const app = express().use(express.json())
+
+app.use(devLogger).use(postLogger)
 
 let persons = [
     {
