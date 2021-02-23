@@ -1,0 +1,44 @@
+POST http://localhost:3001/api/persons 
+content-Type: application/json
+
+{
+    "name": "Diego Seoane",
+    "tfno": "2346164134"
+    
+}
+
+###
+
+POST http://localhost:3001/api/persons 
+content-Type: application/json
+
+{
+    "tfno": "2346164134"
+    
+}
+
+###
+
+POST http://localhost:3001/api/persons 
+content-Type: application/json
+
+{
+    "tfno": "Diego Seoane"
+    
+}
+
+###
+
+POST http://localhost:3001/api/persons 
+content-Type: application/json
+
+### 
+
+POST http://localhost:3001/api/persons 
+content-Type: application/json
+
+{
+    "name": "Arto Hellas",
+    "tfno": "2346164134"
+    
+}

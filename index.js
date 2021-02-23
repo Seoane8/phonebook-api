@@ -1,7 +1,9 @@
 const express = require('express')
 
-const app = express()
-const PORT = 3001
+const MAX_RANDOM = Number.MAX_SAFE_INTEGER
+const PORT = 3001 
+
+const app = express().use(express.json())
 
 let persons = [
     {
@@ -60,9 +62,36 @@ app.delete('/api/persons/:id', (request, response, next) => {
     response.status(204).end()
 })
 
+app.post('/api/persons', (request, response) => {
+    const personToCreate = request.body
+
+    if (!personToCreate || !personToCreate.name || !personToCreate.tfno){
+        return response.status(400).json({
+            error: '\'name\' and \'tfno\' are necessary'
+        })
+    }
+
+    const existentPerson = persons.find(person => person.name === personToCreate.name)
+
+    if (existentPerson){
+        return response.status(409).json({
+            error: `person name (${existentPerson.name}) already exists`
+        })
+    }
+
+    const newPerson = {
+        ...personToCreate,
+        id: Math.round(Math.random() * MAX_RANDOM)
+    }
+
+    persons = [...persons, newPerson]
+
+    response.status(201).end()
+})
+
 app.use((request, response) => {
     response.status(404).json({
-        error: 'Not found'
+        error: 'not found'
     })
 })
 
