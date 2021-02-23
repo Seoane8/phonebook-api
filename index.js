@@ -3,7 +3,7 @@ const cors = require('cors')
 const {devLogger, postLogger} = require('./logs/loggers')
 
 const MAX_RANDOM = Number.MAX_SAFE_INTEGER
-const PORT = 3001 
+const PORT = process.env.PORT || 3001 
 
 const app = express()
     .use(cors())
