@@ -5,7 +5,6 @@ const cors = require('cors')
 const {devLogger, postLogger} = require('./logs/loggers')
 const {Person} = require('./models')
 
-const MAX_RANDOM = Number.MAX_SAFE_INTEGER
 const PORT = process.env.PORT
 
 const app = express()
@@ -46,7 +45,8 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+    Person.find({})
+        .then(persons => response.json(persons))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -81,22 +81,21 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
-    const existentPerson = persons.find(person => person.name === personToCreate.name)
+    /* const existentPerson = persons.find(person => person.name === personToCreate.name)
 
     if (existentPerson){
         return response.status(409).json({
             error: `person name (${existentPerson.name}) already exists`
         })
-    }
+    } */
 
-    const newPerson = {
-        ...personToCreate,
-        id: Math.round(Math.random() * MAX_RANDOM)
-    }
+    const newPerson = new Person({
+        name: personToCreate.name,
+        tfno: personToCreate.tfno
+    })
 
-    persons = [...persons, newPerson]
-
-    response.status(201).json(newPerson)
+    newPerson.save()
+        .then(savedPerson => response.status(201).json(savedPerson))
 })
 
 app.use((request, response) => {

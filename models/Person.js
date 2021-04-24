@@ -5,8 +5,8 @@ const personSchema = new Schema({
     tfno: String
 })
 
-personSchema.set('toJson', {
-    transform: (_document, returnedObject) => {
+personSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id
         delete returnedObject._id
         delete returnedObject.__v
