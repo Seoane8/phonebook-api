@@ -36,7 +36,7 @@ app.get('/api/persons/:id', (request, response, next) => {
     const {id} = request.params
 
     Person.findById(id)
-        .then(person => response.json(person))
+        .then(person => person ? response.json(person) : next())
         .catch(next)
 })
 
@@ -44,7 +44,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
     const {id} = request.params
     
     Person.findByIdAndRemove(id)
-        .then(() => response.status(204).end())
+        .then(person => person ? response.status(204).end() : next())
         .catch(next)
 })
 
@@ -72,7 +72,7 @@ app.put('/api/persons/:id', (request, response, next) => {
     const person = request.body
 
     Person.findByIdAndUpdate(id, person, {new: true})
-        .then(updatedPerson => response.json(updatedPerson))
+        .then(updatedPerson => updatedPerson ? response.json(updatedPerson) : next())
         .catch(next)
 })
 
