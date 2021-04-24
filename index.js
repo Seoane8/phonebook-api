@@ -15,34 +15,15 @@ app
     .use(devLogger)
     .use(postLogger)
 
-let persons = [
-    {
-        name: 'Arto Hellas',
-        tfno: '040-123456',
-        id: 1,
-    },
-    {
-        name: 'Ada Lovelace',
-        tfno: '39-44-5323523',
-        id: 2,
-    },
-    {
-        name: 'Dan Abramov',
-        tfno: '12-43-234345',
-        id: 3,
-    },
-    {
-        name: 'Mary Poppendieck',
-        tfno: '39-23-6423122',
-        id: 4,
-    },
-]
-
-app.get('/info', (request, response) => {
-    const enters = `<p>Phonebook has info for ${persons.length} people</p>`
-    const actualDate = new Date
-    const date = `<p>${actualDate.toGMTString()}`
-    response.send(enters+date)
+app.get('/info', (request, response, next) => {
+    Person.countDocuments({})
+        .then(numDocuments => {
+            const enters = `<p>Phonebook has info for ${numDocuments} people</p>`
+            const actualDate = new Date
+            const date = `<p>${actualDate.toGMTString()}`
+            response.send(enters+date)
+        })
+        .catch(next) 
 })
 
 app.get('/api/persons', (request, response, next) => {
@@ -52,14 +33,11 @@ app.get('/api/persons', (request, response, next) => {
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
+    const {id} = request.params
 
-    if (!person) {
-        return next()
-    }
-
-    response.json(person)
+    Person.findById(id)
+        .then(person => response.json(person))
+        .catch(next)
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
