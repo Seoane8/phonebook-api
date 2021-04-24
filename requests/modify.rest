@@ -1,0 +1,44 @@
+PUT http://localhost:3001/api/persons/60842faabca4453fc9ab3520
+content-Type: application/json
+
+{
+    "name": "Diego",
+    "tfno": "4581034958713"
+    
+}
+
+###
+
+PUT http://localhost:3001/api/persons/60842faabca4453fc9ab3520
+content-Type: application/json
+
+{
+    "tfno": "2346164134"
+    
+}
+
+###
+
+PUT http://localhost:3001/api/persons/60842faabca4453fc9ab3520
+content-Type: application/json
+
+{
+    "name": "Diego Seoane"
+    
+}
+
+###
+
+PUT http://localhost:3001/api/persons/60842faabca4453fc9ab3520
+content-Type: application/json
+
+### 
+
+PUT http://localhost:3001/api/persons/341634
+content-Type: application/json
+
+{
+    "name": "Arto Hellas",
+    "tfno": "2346164134"
+    
+}
