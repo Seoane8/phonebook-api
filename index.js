@@ -4,6 +4,7 @@ const express = require('express')
 const cors = require('cors')
 const {devLogger, postLogger} = require('./logs/loggers')
 const {Person} = require('./models')
+const {unknownEndpoint, errorHandler} = require('./middlewares')
 
 const PORT = process.env.PORT
 
@@ -47,7 +48,7 @@ app.get('/info', (request, response) => {
 app.get('/api/persons', (request, response, next) => {
     Person.find({})
         .then(persons => response.json(persons))
-        .catch(err => next(err))
+        .catch(next)
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -64,9 +65,9 @@ app.get('/api/persons/:id', (request, response, next) => {
 app.delete('/api/persons/:id', (request, response, next) => {
     const {id} = request.params
     
-    Person.findByIdAndDelete(id)
+    Person.findByIdAndRemove(id)
         .then(() => response.status(204).end())
-        .catch(err => next(err))
+        .catch(next)
 })
 
 app.post('/api/persons', (request, response, next) => {
@@ -78,14 +79,6 @@ app.post('/api/persons', (request, response, next) => {
         })
     }
 
-    /* const existentPerson = persons.find(person => person.name === personToCreate.name)
-
-    if (existentPerson){
-        return response.status(409).json({
-            error: `person name (${existentPerson.name}) already exists`
-        })
-    } */
-
     const newPerson = new Person({
         name: personToCreate.name,
         tfno: personToCreate.tfno
@@ -93,14 +86,13 @@ app.post('/api/persons', (request, response, next) => {
 
     newPerson.save()
         .then(savedPerson => response.status(201).json(savedPerson))
-        .catch(err => next(err))
+        .catch(next)
 })
 
-app.use((request, response) => {
-    response.status(404).json({
-        error: 'not found'
-    })
-})
+  
+app.use(unknownEndpoint)
+
+app.use(errorHandler)
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
