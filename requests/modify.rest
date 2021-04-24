@@ -1,4 +1,4 @@
-PUT http://localhost:3001/api/persons/60842faabca4453fc9ab3520
+PUT http://localhost:3001/api/persons/:id
 content-Type: application/json
 
 {
@@ -9,7 +9,7 @@ content-Type: application/json
 
 ###
 
-PUT http://localhost:3001/api/persons/60842faabca4453fc9ab3520
+PUT http://localhost:3001/api/persons/:id
 content-Type: application/json
 
 {
@@ -19,7 +19,7 @@ content-Type: application/json
 
 ###
 
-PUT http://localhost:3001/api/persons/60842faabca4453fc9ab3520
+PUT http://localhost:3001/api/persons/:id
 content-Type: application/json
 
 {
@@ -29,12 +29,12 @@ content-Type: application/json
 
 ###
 
-PUT http://localhost:3001/api/persons/60842faabca4453fc9ab3520
+PUT http://localhost:3001/api/persons/:id
 content-Type: application/json
 
 ### 
 
-PUT http://localhost:3001/api/persons/341634
+PUT http://localhost:3001/api/persons/:id
 content-Type: application/json
 
 {
