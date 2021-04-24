@@ -49,18 +49,9 @@ app.delete('/api/persons/:id', (request, response, next) => {
 })
 
 app.post('/api/persons', (request, response, next) => {
-    const personToCreate = request.body
+    const {name, tfno} = request.body
 
-    if (!personToCreate || !personToCreate.name || !personToCreate.tfno){
-        return response.status(400).json({
-            error: '\'name\' and \'tfno\' are necessary'
-        })
-    }
-
-    const newPerson = new Person({
-        name: personToCreate.name,
-        tfno: personToCreate.tfno
-    })
+    const newPerson = new Person({name, tfno})
 
     newPerson.save()
         .then(savedPerson => response.status(201).json(savedPerson))
@@ -71,7 +62,7 @@ app.put('/api/persons/:id', (request, response, next) => {
     const {id} = request.params
     const person = request.body
 
-    Person.findByIdAndUpdate(id, person, {new: true})
+    Person.findByIdAndUpdate(id, person, {new: true, runValidators: true})
         .then(updatedPerson => updatedPerson ? response.json(updatedPerson) : next())
         .catch(next)
 })
