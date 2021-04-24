@@ -1,9 +1,12 @@
+require('dotenv').config()
+
 const express = require('express')
 const cors = require('cors')
 const {devLogger, postLogger} = require('./logs/loggers')
+const {Person} = require('./models')
 
 const MAX_RANDOM = Number.MAX_SAFE_INTEGER
-const PORT = process.env.PORT || 3001 
+const PORT = process.env.PORT
 
 const app = express()
     .use(cors())
