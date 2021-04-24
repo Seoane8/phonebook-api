@@ -44,9 +44,10 @@ app.get('/info', (request, response) => {
     response.send(enters+date)
 })
 
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (request, response, next) => {
     Person.find({})
         .then(persons => response.json(persons))
+        .catch(err => next(err))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -61,18 +62,14 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
-    const id = Number(request.params.id)
-    let notFound = true
-    persons = persons.filter(person => person.id !== id ? true : notFound=false)
-
-    if (notFound) {
-        return next()
-    }
-
-    response.status(204).end()
+    const {id} = request.params
+    
+    Person.findByIdAndDelete(id)
+        .then(() => response.status(204).end())
+        .catch(err => next(err))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     const personToCreate = request.body
 
     if (!personToCreate || !personToCreate.name || !personToCreate.tfno){
@@ -96,6 +93,7 @@ app.post('/api/persons', (request, response) => {
 
     newPerson.save()
         .then(savedPerson => response.status(201).json(savedPerson))
+        .catch(err => next(err))
 })
 
 app.use((request, response) => {
