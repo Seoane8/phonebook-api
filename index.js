@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+const path = require('path')
 const express = require('express')
 const cors = require('cors')
 const {devLogger, postLogger} = require('./logs/loggers')
@@ -10,7 +11,7 @@ const PORT = process.env.PORT
 
 const app = express()
     .use(cors())
-    .use(express.static('./build'))
+    .use(express.static(path.join(__dirname, 'build')))
     .use(express.json())
     .use(devLogger)
     .use(postLogger)
