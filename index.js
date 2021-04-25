@@ -10,7 +10,7 @@ const PORT = process.env.PORT
 
 const app = express()
     .use(cors())
-    .use(express.static('build'))
+    .use(express.static('./build'))
     .use(express.json())
     .use(devLogger)
     .use(postLogger)
